@@ -12,6 +12,8 @@ jobs:
         # using our custom composite action
       - name: Load & cache dependencies
         uses: ./.github/actions/cached-deps
+        with:
+          caching: 'false'
       - name: Lint code
         run: npm run lint
   test:
