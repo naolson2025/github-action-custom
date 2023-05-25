@@ -1,0 +1,17 @@
+# This is an example of a custom composite gh action
+name: 'Get & Cache Dependencies'
+description: 'Get the dependencies via npm and cache them for future builds'
+runs:
+  # composite is a keywork
+  using: 'composite'
+  steps:
+    - name: Cache dependencies
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci
+      shell: bash
