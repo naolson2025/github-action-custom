@@ -12,6 +12,11 @@ inputs:
   dist-folder:
     description: 'The folder containing the static website files'
     required: true
+# with output for a JS we don't specify the value here
+# instead we specify it in the JS file
+outputs:
+  website-url:
+    description: 'The URL of the deployed website'
 runs:
   using: 'node16'
   main: 'main.js'

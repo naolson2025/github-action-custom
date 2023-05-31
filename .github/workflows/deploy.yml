@@ -66,11 +66,16 @@ jobs:
       - name: Output contents
         run: ls
       - name: Deploy site
-        run: echo "Deploying..."
-  information:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Run custom JS action
+        id: deploy
         uses: ./.github/actions/deploy-s3-javascript
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        with:
+          bucket: ${{ secrets.BUCKET_NAME }}
+          dist-folder: ./dist
+      - name: Output deploy result
+        # steps is a keyword, deploy is the id of the step
+        # outputs is a keyword, website-url is the name of the output found in action.yaml in this project
+        run: |
+          echo "Live URL: ${{ steps.deploy.outputs.website-url }}"
